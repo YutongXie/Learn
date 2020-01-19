@@ -15,3 +15,25 @@ CREATE TABLE User (
 );
 
 INSERT INTO User values (1, 'test', 'ADMIN');
+
+CREATE TABLE TrainLine (
+    lineName VARCHAR(20),
+    startPositionName VARCHAR(100),
+    destinationName VARCHAR(100),
+    price NUMERIC(10,2),
+    startTime VARCHAR(20),
+    arriveTime VARCHAR(20)
+);
+
+INSERT INTO TrainLine values('D35', 'Dalian', 'Panjin', 91, '10:50', '12:30');
+
+
+CREATE TABLE TicketBalance (
+    lineName VARCHAR(20),
+    seatABalance int,
+    seatBBalance int,
+    seatCBalance int,
+    seatEBalance int,
+    seatFBalance int
+);
+INSERT INTO TicketBalance values('D35', 100, 200, 50, 35, 40);
