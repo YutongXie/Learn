@@ -34,6 +34,20 @@ CREATE TABLE TicketBalance (
     seatBBalance int,
     seatCBalance int,
     seatEBalance int,
-    seatFBalance int
+    seatFBalance int,
+    day VARCHAR(20)
 );
-INSERT INTO TicketBalance values('D35', 100, 200, 50, 35, 40);
+INSERT INTO TicketBalance values('D35', 100, 200, 50, 35, 40, '2020-01-19');
+
+CREATE TABLE TicketRecord (
+    id int,
+    requsetId VARCHAR(50),
+    buyer VARCHAR(20),
+    passenger VARCHAR(20),
+    startPosition VARCHAR(100),
+    destination VARCHAR(100),
+    seatNum VARCHAR(10),
+    coachNum int,
+    creatTime timestamp,
+    status VARCHAR(10)
+);

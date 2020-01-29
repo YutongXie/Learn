@@ -5,5 +5,7 @@ import com.huitong.learn.entity.TicketBalance;
 import java.util.List;
 
 public interface TicketBalanceDAO {
-    List<TicketBalance> getTicketBalance(String startPosition, String destination);
+    List<TicketBalance> getTicketBalance(String startPosition, String destination, String day);
+
+    void updateTicketBalance(String day, String lineName, String type, int count);
 }

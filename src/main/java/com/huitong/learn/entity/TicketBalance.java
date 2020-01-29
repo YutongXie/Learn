@@ -1,5 +1,7 @@
 package com.huitong.learn.entity;
 
+import java.util.Date;
+
 public class TicketBalance {
     private TrainLine trainLine;
     //Seat A, B, C, E, F
@@ -8,6 +10,7 @@ public class TicketBalance {
     private int seatCBalance;
     private int seatEBalance;
     private int seatFBalance;
+    private String day;
 
     public TrainLine getTrainLine() {
         return trainLine;
@@ -55,5 +58,13 @@ public class TicketBalance {
 
     public void setSeatFBalance(int seatFBalance) {
         this.seatFBalance = seatFBalance;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }
