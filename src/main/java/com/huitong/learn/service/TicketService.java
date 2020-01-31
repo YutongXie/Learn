@@ -66,61 +66,14 @@ public class TicketService {
         for (Ticket ticket : ticketRequest.getTicketList()) {//update TicketBalance
 
             //1. check if have available seats
-            boolean seatAvailable = true;
             List<TicketBalance> ticketBalanceList = ticketBalanceDAO.getTicketBalance(ticket.getStartPosition(), ticket.getDestination(), ticket.getDay());
-            if(ticketBalanceList == null || ticketBalanceList.size() == 0)
-                return false;
-
-            String seatBlance = "";
-            switch (ticket.getSeatType()) {
-                case "A":
-                    if (ticketBalanceList.get(0).getSeatABalance() > 0) {
-                        seatAvailable = true;
-                    } else {
-                        seatAvailable = false;
-                    }
-                    break;
-                case "B":
-                    if (ticketBalanceList.get(0).getSeatBBalance() > 0) {
-                        seatAvailable = true;
-                    } else {
-                        seatAvailable = false;
-                    }
-                    break;
-                case "C":
-                    if (ticketBalanceList.get(0).getSeatCBalance() > 0) {
-                        seatAvailable = true;
-                    } else {
-                        seatAvailable = false;
-                    }
-                    break;
-                case "E":
-                    if (ticketBalanceList.get(0).getSeatEBalance() > 0) {
-                        seatAvailable = true;
-                    } else {
-                        seatAvailable = false;
-                    }
-                    break;
-                case "F":
-                    if (ticketBalanceList.get(0).getSeatFBalance() > 0) {
-                        seatAvailable = true;
-                    } else {
-                        seatAvailable = false;
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            if (!seatAvailable) {
+            if (!TicketRequestUtil.isSeatAvailable(ticketBalanceList, ticket)) {
                 continue;
             }
 
             String seatInfo  = ticketBalanceDAO.updateTicketBalance(ticketBalanceList.get(0).getId(), ticket.getSeatType(), 1);
             TicketRecord ticketRecord = new TicketRecord();
-            ticketRecord.setId(100);
             ticketRecord.setRequestId(TicketRequestUtil.generateRequestId());
-
             String coachNum = seatInfo.substring(0, seatInfo.indexOf("_"));
             String seatNum = seatInfo.substring(seatInfo.indexOf("_") + 1);
             ticketRecord.setCoachNum(Integer.parseInt(coachNum));
@@ -129,12 +82,14 @@ public class TicketService {
             ticketRecord.setDestination(ticket.getDestination());
             ticketRecord.setBuyer(ticketRequest.getUserName());
             ticketRecord.setLineName(ticket.getLineName());
-            ticketRecord.setStatus("ACITVE");
+            ticketRecord.setStatus("ACTIVE");
             ticketRecord.setCreateTime(new Date());
             ticketRecord.setPassenger(ticket.getCustomer());
             ticketRecordList.add(ticketRecord);
         }
         //Generate ticket record in TicketRecords
+        //TODO: maybe can leave the save ticket function to other component
+        // drop the save ticket request to thread pool
         ticketRecordDAO.saveNewTickets(ticketRecordList);
         return true;
     }
