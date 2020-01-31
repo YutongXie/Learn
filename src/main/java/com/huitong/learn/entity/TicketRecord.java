@@ -5,7 +5,7 @@ import java.util.Date;
 public class TicketRecord {
 
     private int id;
-    private String requsetId;
+    private String requestId;
     private String lineName;
     private String buyer;
     private String passenger;
@@ -24,12 +24,12 @@ public class TicketRecord {
         this.id = id;
     }
 
-    public String getRequsetId() {
-        return requsetId;
+    public String getRequestId() {
+        return requestId;
     }
 
-    public void setRequsetId(String requsetId) {
-        this.requsetId = requsetId;
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
     }
 
     public String getBuyer() {

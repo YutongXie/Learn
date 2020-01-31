@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TicketRecordDAO {
     boolean saveNewTickets(List<TicketRecord> ticketRecordList);
+    List<TicketRecord> queryTicketRecords(String buyerName);
 }

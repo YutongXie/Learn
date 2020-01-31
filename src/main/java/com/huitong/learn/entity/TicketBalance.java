@@ -3,6 +3,7 @@ package com.huitong.learn.entity;
 import java.util.Date;
 
 public class TicketBalance {
+    private int id;
     private TrainLine trainLine;
     //Seat A, B, C, E, F
     private int seatABalance;
@@ -66,5 +67,13 @@ public class TicketBalance {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

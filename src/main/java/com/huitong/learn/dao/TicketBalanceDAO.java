@@ -1,11 +1,12 @@
 package com.huitong.learn.dao;
 
 import com.huitong.learn.entity.TicketBalance;
+import com.huitong.learn.entity.TicketBalanceDetail;
 
 import java.util.List;
 
 public interface TicketBalanceDAO {
     List<TicketBalance> getTicketBalance(String startPosition, String destination, String day);
-
-    void updateTicketBalance(String day, String lineName, String type, int count);
+    List<TicketBalanceDetail> getTicketBalanceDetail(int id);
+    String updateTicketBalance(int id, String type, int count);
 }

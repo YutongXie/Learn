@@ -8,12 +8,12 @@ import java.util.Optional;
 @Component
 public class KafkaConsumer {
 
-    @KafkaListener(topics = {"com.xyt.kafka.test"})
+//    @KafkaListener(topics = {"com.xyt.kafka.test"})
     public void consume(ConsumerRecord consumerRecord) {
-       Optional message = Optional.ofNullable(consumerRecord.value());
-       if(message.isPresent()) {
-           Object obj = message.get();
-           System.out.println("Consume message from Kafka:" + obj);
-       }
+//       Optional message = Optional.ofNullable(consumerRecord.value());
+//       if(message.isPresent()) {
+//           Object obj = message.get();
+//           System.out.println("Consume message from Kafka:" + obj);
+//       }
     }
 }
