@@ -4,6 +4,8 @@ import com.huitong.learn.dao.TicketBalanceDAO;
 import com.huitong.learn.dao.TicketRecordDAO;
 import com.huitong.learn.dao.TrainLineDAO;
 import com.huitong.learn.entity.*;
+import com.huitong.learn.executor.SaveTicketRecordTask;
+import com.huitong.learn.executor.TicketRecordExecutor;
 import com.huitong.learn.util.TicketRequestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,6 +31,8 @@ public class TicketService {
     private TicketBalanceDAO ticketBalanceDAO;
     @Autowired
     private TicketRecordDAO ticketRecordDAO;
+    @Autowired
+    private TicketRecordExecutor ticketRecordExecutor;
 
     @RequestMapping(value = "/ticketService/queryTrainLines", method = RequestMethod.GET)
     public List<TrainLine> queryTrainLines(String startPosition, String destination) {
@@ -98,10 +102,7 @@ public class TicketService {
             ticketRecord.setPassenger(ticket.getCustomer());
             ticketRecordList.add(ticketRecord);
         }
-        //Generate ticket record in TicketRecords
-        //TODO: maybe can leave the save ticket function to other component
-        // drop the save ticket request to thread pool
-        ticketRecordDAO.saveNewTickets(ticketRecordList);
+        ticketRecordExecutor.execute(new SaveTicketRecordTask(ticketRecordList, ticketRecordDAO));
         return true;
     }
 
