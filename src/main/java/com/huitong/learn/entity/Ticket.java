@@ -1,5 +1,8 @@
 package com.huitong.learn.entity;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class Ticket {
     private String customer;
     private String seatNum;
@@ -72,5 +75,10 @@ public class Ticket {
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }
