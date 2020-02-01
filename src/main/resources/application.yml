@@ -21,3 +21,8 @@ spring:
       auto-commit-internal: 100
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+app:
+  ticketRecord:
+    executor:
+      corePoolSize: 100

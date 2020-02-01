@@ -102,7 +102,7 @@ public class TicketService {
             ticketRecord.setPassenger(ticket.getCustomer());
             ticketRecordList.add(ticketRecord);
         }
-        ticketRecordExecutor.execute(new SaveTicketRecordTask(ticketRecordList, ticketRecordDAO));
+        ticketRecordExecutor.execute(new SaveTicketRecordTask(ticketRecordList));
         return true;
     }
 

@@ -12,7 +12,7 @@ public class SpringbatchlearnApplication {
 
 	//TODO List
 
-	//3. delegate save ticket to separate function using thread pool
+
 	//4. redesign the data structure -> seat number (row 1-10)
 	//5. think about how to figure the concurrent issue -> use Geode?
 	//6. partial record lock -> google guava striped lock
