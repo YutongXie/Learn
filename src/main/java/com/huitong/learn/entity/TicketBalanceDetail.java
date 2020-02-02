@@ -2,6 +2,7 @@ package com.huitong.learn.entity;
 
 public class TicketBalanceDetail {
     private int id;
+    private int ticketBalanceId;
     private String seatType;
     private int coach1;
     private int coach2;
@@ -108,5 +109,13 @@ public class TicketBalanceDetail {
 
     public void setCoach10(int coach10) {
         this.coach10 = coach10;
+    }
+
+    public int getTicketBalanceId() {
+        return ticketBalanceId;
+    }
+
+    public void setTicketBalanceId(int ticketBalanceId) {
+        this.ticketBalanceId = ticketBalanceId;
     }
 }

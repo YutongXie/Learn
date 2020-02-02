@@ -59,13 +59,22 @@ public class TicketService {
     this will be used for 2nd level check once already get the high level balance information
      */
     @RequestMapping(value="/ticketService/queryTicketBalanceDetail", method = RequestMethod.GET)
-    public List<TicketBalanceDetail> queryTicketBalanceDetail(int id) {
-        if(id <= 0) {
+    public List<TicketBalanceDetail> queryTicketBalanceDetail(int ticketBalanceId) {
+        if(ticketBalanceId <= 0) {
             return new ArrayList<>();
         } else {
-            logger.info("Query ticket balance detail - id:{} ", id);
+            logger.info("Query ticket balance detail - ticketBalanceId:{} ", ticketBalanceId);
         }
-        return ticketBalanceDAO.getTicketBalanceDetail(id);
+        return ticketBalanceDAO.getTicketBalanceDetail(ticketBalanceId);
+    }
+    @RequestMapping(value="/ticketService/queryTicketBalanceCoachDetail", method = RequestMethod.GET)
+    public List<TicketBalanceCoachDetail> queryTicketBalanceCoachDetail(int ticketBalanceId) {
+        if(ticketBalanceId <= 0) {
+            return new ArrayList<>();
+        } else {
+            logger.info("Query ticket balance coach detail - ticketBalanceId:{} ", ticketBalanceId);
+        }
+        return ticketBalanceDAO.getTicketBalanceCoachDetail(ticketBalanceId);
     }
 
     @RequestMapping(value="/ticketService/buyTicket", method = RequestMethod.POST)

@@ -1,6 +1,7 @@
 package com.huitong.learn.dao;
 
 import com.huitong.learn.entity.TicketBalance;
+import com.huitong.learn.entity.TicketBalanceCoachDetail;
 import com.huitong.learn.entity.TicketBalanceDetail;
 import com.huitong.learn.entity.TrainLine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,11 +59,19 @@ public class TicketBalanceDAOJdbcImpl implements TicketBalanceDAO{
     }
 
     @Override
-    public List<TicketBalanceDetail> getTicketBalanceDetail(int id) {
-        String sql = "SELECT * FROM TicketBalanceDetail where id = :id";
+    public List<TicketBalanceDetail> getTicketBalanceDetail(int ticketBalanceId) {
+        String sql = "SELECT * FROM TicketBalanceDetail where ticketBalanceId = :ticketBalanceId";
         Map<String, Object> param = new HashMap<>();
-        param.put("id", id);
+        param.put("ticketBalanceId", ticketBalanceId);
         return namedParameterJdbcTemplate.query(sql, param, new BeanPropertyRowMapper<>(TicketBalanceDetail.class));
+    }
+
+    @Override
+    public List<TicketBalanceCoachDetail> getTicketBalanceCoachDetail(int ticketBalanceId) {
+        String sql = "SELECT tbcd.* FROM TicketBalanceDetail tbd, TicketBalanceCoachDetail tbcd where tbd.id = tbcd.ticketBalanceDetailId and tbd.ticketBalanceId = :ticketBalanceId";
+        Map<String, Object> param = new HashMap<>();
+        param.put("ticketBalanceId", ticketBalanceId);
+        return namedParameterJdbcTemplate.query(sql, param, new BeanPropertyRowMapper<>(TicketBalanceCoachDetail.class));
     }
 
     @Override
@@ -95,9 +104,9 @@ public class TicketBalanceDAOJdbcImpl implements TicketBalanceDAO{
         params.put("count", count);
         namedParameterJdbcTemplate.update(sql, params);
 
-        String detailQuerySql = "SELECT * from TicketBalanceDetail where id = :id and seatType = :seatType";
+        String detailQuerySql = "SELECT * from TicketBalanceDetail where ticketBalanceId = :ticketBalanceId and seatType = :seatType";
         Map<String, Object> detailQueryParams = new HashMap<>();
-        detailQueryParams.put("id", id);
+        detailQueryParams.put("ticketBalanceId", id);
         detailQueryParams.put("seatType", type);
         List<TicketBalanceDetail> ticketBalanceDetailList = namedParameterJdbcTemplate.query(detailQuerySql, detailQueryParams, new BeanPropertyRowMapper<>(TicketBalanceDetail.class));
 
@@ -134,13 +143,58 @@ public class TicketBalanceDAOJdbcImpl implements TicketBalanceDAO{
             condition = "coach10";
             coachNum = 10;
         }
-        String detailUpdateSql = "UPDATE TicketBalanceDetail set " + condition + "=" + condition +" - :count where id = :id and seatType = :seatType";
+        String detailUpdateSql = "UPDATE TicketBalanceDetail set " + condition + "=" + condition +" - :count where id = :id";
 
         Map<String, Object> detailUpdateParams = new HashMap<>();
-        detailUpdateParams.put("id", id);
-        detailUpdateParams.put("seatType", type);
+        detailUpdateParams.put("id", ticketBalanceDetailList.get(0).getId());
         detailUpdateParams.put("count", count);
         namedParameterJdbcTemplate.update(detailUpdateSql, detailUpdateParams);
-        return coachNum + "_10" + type;
+
+        String coachDetailQuerySql = "SELECT * FROM TicketBalanceCoachDetail where coach = :coach and ticketBalanceDetailId = :ticketBalanceDetailId ";
+        Map<String, Object> coachDetailQueryParams = new HashMap<>();
+        coachDetailQueryParams.put("coach", coachNum);
+        coachDetailQueryParams.put("ticketBalanceDetailId", ticketBalanceDetailList.get(0).getId());
+        List<TicketBalanceCoachDetail> ticketBalanceCoachDetailList = namedParameterJdbcTemplate.query(coachDetailQuerySql, coachDetailQueryParams, new BeanPropertyRowMapper<>(TicketBalanceCoachDetail.class));
+        String coachDetailCondition = "";
+        int rowNum = 0;
+        if(ticketBalanceCoachDetailList.get(0).getRow1() == 0) {
+            coachDetailCondition = "row1";
+            rowNum = 1;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow2() == 0) {
+            coachDetailCondition = "row2";
+            rowNum = 2;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow3() == 0) {
+            coachDetailCondition = "row3";
+            rowNum = 3;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow4() == 0) {
+            coachDetailCondition = "row4";
+            rowNum = 4;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow5() == 0) {
+            coachDetailCondition = "row5";
+            rowNum = 5;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow6() == 0) {
+            coachDetailCondition = "row6";
+            rowNum = 6;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow7() == 0) {
+            coachDetailCondition = "row7";
+            rowNum = 7;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow8() == 0) {
+            coachDetailCondition = "row8";
+            rowNum = 8;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow9() == 0) {
+            coachDetailCondition = "row9";
+            rowNum = 9;
+        } else if (ticketBalanceCoachDetailList.get(0).getRow10() == 0) {
+            coachDetailCondition = "row10";
+            rowNum = 10;
+        }
+
+        String coachDetailUpdateSql = "UPDATE TicketBalanceCoachDetail set " + coachDetailCondition + " = 1 where coach = :coach and ticketBalanceDetailId = :ticketBalanceDetailId";
+        Map<String, Object> coachDetailUpdateParams = new HashMap<>();
+        coachDetailUpdateParams.put("coach", coachNum);
+        coachDetailUpdateParams.put("ticketBalanceDetailId", ticketBalanceDetailList.get(0).getId());
+        namedParameterJdbcTemplate.update(coachDetailUpdateSql, coachDetailUpdateParams);
+
+        return coachNum + "_" + rowNum + type;
     }
 }
