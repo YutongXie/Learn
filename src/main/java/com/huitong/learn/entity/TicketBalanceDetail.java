@@ -1,5 +1,7 @@
 package com.huitong.learn.entity;
 
+import java.util.List;
+
 public class TicketBalanceDetail {
     private int id;
     private int ticketBalanceId;
@@ -14,7 +16,7 @@ public class TicketBalanceDetail {
     private int coach8;
     private int coach9;
     private int coach10;
-
+    private List<TicketBalanceCoachDetail> ticketBalanceCoachDetailList;
     public int getId() {
         return id;
     }
@@ -117,5 +119,13 @@ public class TicketBalanceDetail {
 
     public void setTicketBalanceId(int ticketBalanceId) {
         this.ticketBalanceId = ticketBalanceId;
+    }
+
+    public List<TicketBalanceCoachDetail> getTicketBalanceCoachDetailList() {
+        return ticketBalanceCoachDetailList;
+    }
+
+    public void setTicketBalanceCoachDetailList(List<TicketBalanceCoachDetail> ticketBalanceCoachDetailList) {
+        this.ticketBalanceCoachDetailList = ticketBalanceCoachDetailList;
     }
 }

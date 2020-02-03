@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -196,5 +197,74 @@ public class TicketBalanceDAOJdbcImpl implements TicketBalanceDAO{
         namedParameterJdbcTemplate.update(coachDetailUpdateSql, coachDetailUpdateParams);
 
         return coachNum + "_" + rowNum + type;
+    }
+
+    @Override
+    public List<TicketBalance> getAllActiveTicketBalance(int range) {
+        String sql = "Select tb.id as 'TicketBalanceId', tbd.id as 'TicketBalanceDetailId', tbcd.id as 'TicketBalanceCoachDetailId', tb.*, tbd.*, tbcd.* from TicketBalance tb, TicketBalanceDetail tbd, TicketBalanceCoachDetail tbcd ， TrainLine tl "
+                + "where tb.id = tbd.ticketBalanceId and tbd.id = tbcd.ticketBalanceDetailId and tl.lineName = tb.lineName"
+                + " and day = :day";
+        Map<String, Object> params = new HashMap<>();
+        params.put("day", range);
+
+        return namedParameterJdbcTemplate.query(sql, params, new RowMapper<TicketBalance>() {
+            @Override
+            public TicketBalance mapRow(ResultSet resultSet, int i) throws SQLException {
+                TicketBalance ticketBalance = new TicketBalance();
+                ticketBalance.setId(resultSet.getInt("TicketBalanceId"));
+                ticketBalance.setDay(resultSet.getString("day"));
+                ticketBalance.setSeatABalance(resultSet.getInt("seatABalance"));
+                ticketBalance.setSeatBBalance(resultSet.getInt("seatBBalance"));
+                ticketBalance.setSeatCBalance(resultSet.getInt("seatCBalance"));
+                ticketBalance.setSeatEBalance(resultSet.getInt("seatEBalance"));
+                ticketBalance.setSeatFBalance(resultSet.getInt("seatFBalance"));
+
+                TrainLine trainLine = new TrainLine();
+                trainLine.setLineName(resultSet.getString("lineName"));
+                trainLine.setPrice(resultSet.getDouble("price"));
+                trainLine.setStartPositionName(resultSet.getString("startPositionName"));
+                trainLine.setDestinationName(resultSet.getString("destinationName"));
+                trainLine.setStartTime(resultSet.getString("startTime"));
+                trainLine.setArriveTime(resultSet.getString("arriveTime"));
+                ticketBalance.setTrainLine(trainLine);
+
+                TicketBalanceDetail ticketBalanceDetail = new TicketBalanceDetail();
+                ticketBalanceDetail.setId(resultSet.getInt("TicketBalanceDetailId"));
+                ticketBalanceDetail.setTicketBalanceId(resultSet.getInt("TicketBalanceId"));
+                ticketBalanceDetail.setSeatType(resultSet.getString("seatType"));
+                ticketBalanceDetail.setCoach1(resultSet.getInt("coach1"));
+                ticketBalanceDetail.setCoach2(resultSet.getInt("coach2"));
+                ticketBalanceDetail.setCoach3(resultSet.getInt("coach3"));
+                ticketBalanceDetail.setCoach4(resultSet.getInt("coach4"));
+                ticketBalanceDetail.setCoach5(resultSet.getInt("coach5"));
+                ticketBalanceDetail.setCoach6(resultSet.getInt("coach6"));
+                ticketBalanceDetail.setCoach7(resultSet.getInt("coach7"));
+                ticketBalanceDetail.setCoach8(resultSet.getInt("coach8"));
+                ticketBalanceDetail.setCoach9(resultSet.getInt("coach9"));
+                ticketBalanceDetail.setCoach10(resultSet.getInt("coach10"));
+                List<TicketBalanceDetail> ticketBalanceDetailList = new ArrayList<>();
+                ticketBalanceDetailList.add(ticketBalanceDetail);
+
+                TicketBalanceCoachDetail ticketBalanceCoachDetail = new TicketBalanceCoachDetail();
+                ticketBalanceCoachDetail.setId(resultSet.getInt("TicketBalanceCoachDetailId"));
+                ticketBalanceCoachDetail.setTicketBalanceDetailId(resultSet.getInt("TicketBalanceDetailId"));
+                ticketBalanceCoachDetail.setCoach(resultSet.getInt("coach"));
+                ticketBalanceCoachDetail.setRow1(resultSet.getInt("row1"));
+                ticketBalanceCoachDetail.setRow2(resultSet.getInt("row2"));
+                ticketBalanceCoachDetail.setRow3(resultSet.getInt("row3"));
+                ticketBalanceCoachDetail.setRow4(resultSet.getInt("row4"));
+                ticketBalanceCoachDetail.setRow5(resultSet.getInt("row5"));
+                ticketBalanceCoachDetail.setRow6(resultSet.getInt("row6"));
+                ticketBalanceCoachDetail.setRow7(resultSet.getInt("row7"));
+                ticketBalanceCoachDetail.setRow8(resultSet.getInt("row8"));
+                ticketBalanceCoachDetail.setRow9(resultSet.getInt("row9"));
+                ticketBalanceCoachDetail.setRow10(resultSet.getInt("row10"));
+
+                List<TicketBalanceCoachDetail> ticketBalanceCoachDetailList = new ArrayList<>();
+                ticketBalanceCoachDetailList.add(ticketBalanceCoachDetail);
+                ticketBalanceDetail.setTicketBalanceCoachDetailList(ticketBalanceCoachDetailList);
+                return ticketBalance;
+            }
+        });
     }
 }

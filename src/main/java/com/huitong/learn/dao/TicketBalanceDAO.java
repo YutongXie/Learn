@@ -11,4 +11,5 @@ public interface TicketBalanceDAO {
     List<TicketBalanceDetail> getTicketBalanceDetail(int ticketBalanceId);
     List<TicketBalanceCoachDetail> getTicketBalanceCoachDetail(int ticketBalanceId);
     String updateTicketBalance(int id, String type, int count);
+    List<TicketBalance> getAllActiveTicketBalance(int range);
 }
